@@ -15,6 +15,7 @@ type Handlers struct {
 func New(handlers Handlers) http.Handler {
 	router := gin.New()
 	router.Use(gin.Recovery())
+	router.Use(middleware.Timeout())
 	router.Use(middleware.Logger())
 	router.Use(middleware.Error())
 
