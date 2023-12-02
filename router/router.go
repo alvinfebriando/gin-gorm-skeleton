@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/alvinfebriando/gin-gorm-skeleton/handler"
+	"github.com/alvinfebriando/gin-gorm-skeleton/middleware"
 	"github.com/gin-gonic/gin"
 )
 
@@ -14,6 +15,7 @@ type Handlers struct {
 func New(handlers Handlers) http.Handler {
 	router := gin.New()
 	router.Use(gin.Recovery())
+	router.Use(middleware.Logger())
 
 	router.POST("/register", handlers.User.Register)
 	router.POST("/login", handlers.User.Login)
