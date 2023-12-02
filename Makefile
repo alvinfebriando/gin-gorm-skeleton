@@ -4,6 +4,8 @@ SRC_APP := ./cmd/$(NAME)/$(NAME).go
 BUILD_BIN := ./bin/$(NAME)
 BUILD_CMD := go build -o $(BUILD_BIN) $(SRC_APP)
 
+SKELETON := github.com/alvinfebriando/gin-gorm-skeleton
+
 reload: air
 	@GIN_MODE=$(ENV) air --log.main_only=true --build.cmd "$(BUILD_CMD)" --build.bin "$(BUILD_BIN)"
 
@@ -42,3 +44,7 @@ air:
 
 clean:
 	@rm $(BUILD_BIN)
+
+rename:
+	@find . -type f -name "*.mod" -exec sed -i'' -e 's,$(SKELETON),$(MODULE),g' {} +
+	@find . -type f -name "*.go" -exec sed -i'' -e 's,$(SKELETON),$(MODULE),g' {} +
