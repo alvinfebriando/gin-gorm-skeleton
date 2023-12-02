@@ -22,5 +22,7 @@ func New(handlers Handlers) http.Handler {
 	router.POST("/register", handlers.User.Register)
 	router.POST("/login", handlers.User.Login)
 
+	router.Use(middleware.Authentication())
+
 	return router
 }
