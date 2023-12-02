@@ -26,6 +26,7 @@ func New(router http.Handler) *http.Server {
 }
 
 func StartWithGracefulShutdown(s *http.Server) {
+	applogger.Log.Info("Starting server ...")
 	go func() {
 		if err := s.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 			applogger.Log.Fatalf("listen: %v", err)
