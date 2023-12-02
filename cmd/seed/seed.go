@@ -1,9 +1,9 @@
 package main
 
 import (
-	"log"
 	"os"
 
+	"github.com/alvinfebriando/gin-gorm-skeleton/applogger"
 	"github.com/alvinfebriando/gin-gorm-skeleton/migration"
 	"github.com/alvinfebriando/gin-gorm-skeleton/repository"
 )
@@ -13,7 +13,7 @@ func main() {
 
 	db, err := repository.GetConnection()
 	if err != nil {
-		log.Println(err)
+		applogger.Log.Error(err)
 	}
 
 	migration.Seed(db)
