@@ -16,6 +16,7 @@ func New(handlers Handlers) http.Handler {
 	router := gin.New()
 	router.Use(gin.Recovery())
 	router.Use(middleware.Logger())
+	router.Use(middleware.Error())
 
 	router.POST("/register", handlers.User.Register)
 	router.POST("/login", handlers.User.Login)
