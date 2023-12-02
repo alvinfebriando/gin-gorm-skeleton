@@ -1,3 +1,15 @@
+ENV := release
+NAME := api
+SRC_APP := ./cmd/$(NAME)/$(NAME).go
+BUILD_BIN := ./bin/$(NAME)
+BUILD_CMD := go build -o $(BUILD_BIN) $(SRC_APP)
+
+run: build
+	@GIN_MODE=$(ENV) $(BUILD_BIN)
+
+build:
+	@$(BUILD_CMD)
+
 migrate:
 	@go run ./cmd/migrate/migrate.go
 
@@ -21,3 +33,6 @@ coverall:
 	@go test ./... --cover --coverprofile=cover.out >> /dev/null
 	@go tool cover --func cover.out | grep total
 	@rm cover.out
+
+clean:
+	@rm $(BUILD_BIN)
