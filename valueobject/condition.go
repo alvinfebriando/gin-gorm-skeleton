@@ -30,7 +30,7 @@ func NewCondition(field string, operation Operator, value any) *Condition {
 	if value == "" {
 		return nil
 	}
-	if operation == ILike {
+	if operation == ILike || operation == Like || operation == NotILike || operation == NotLike {
 		value = "%" + fmt.Sprintf("%v", value) + "%"
 	}
 	return &Condition{
