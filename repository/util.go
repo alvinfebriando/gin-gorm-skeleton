@@ -10,7 +10,7 @@ import (
 const defaultLimit = 10
 
 func getPagination(q *valueobject.Query) (int, int) {
-	limit := q.PerPage
+	limit := q.Limit
 	if limit <= 0 {
 		limit = defaultLimit
 	}

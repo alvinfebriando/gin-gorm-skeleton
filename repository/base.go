@@ -45,7 +45,7 @@ func (r *baseRepository[T]) Find(ctx context.Context, q *valueobject.Query) ([]*
 	err := query.
 		Limit(limit).
 		Offset(offset).
-		Order(q.OrderedBy).
+		Order(q.Sort).
 		Find(&ts).
 		Error
 	if err != nil {

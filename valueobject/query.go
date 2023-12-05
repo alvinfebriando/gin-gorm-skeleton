@@ -2,8 +2,8 @@ package valueobject
 
 type Query struct {
 	Page       int
-	PerPage    int
-	OrderedBy  string
+	Limit      int
+	Sort       string
 	Conditions []*Condition
 	With       []string
 	Locked     bool
@@ -32,12 +32,12 @@ func (q *Query) IsConditionExist(field string) bool {
 
 func (q *Query) Paginate(page int, perPage int) *Query {
 	q.Page = page
-	q.PerPage = perPage
+	q.Limit = perPage
 	return q
 }
 
 func (q *Query) Order(orderedBy string) *Query {
-	q.OrderedBy = orderedBy
+	q.Sort = orderedBy
 	return q
 }
 
