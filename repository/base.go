@@ -35,7 +35,7 @@ func (r *baseRepository[T]) Find(ctx context.Context, q *valueobject.Query) ([]*
 	var ts []*T
 	limit, offset := getPagination(q)
 	query := r.conn(ctx).Model(ts)
-	for _, s := range q.With {
+	for _, s := range q.Joins {
 		query.Joins(s)
 	}
 	for _, condition := range q.Conditions {

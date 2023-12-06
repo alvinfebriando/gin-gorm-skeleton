@@ -5,13 +5,14 @@ type Query struct {
 	Limit      int
 	Sort       string
 	Conditions []*Condition
-	With       []string
+	Joins      []string
 	Locked     bool
 }
 
 func NewQuery() *Query {
 	query := &Query{}
 	query.Conditions = make([]*Condition, 0)
+	query.Joins = make([]string, 0)
 	return query
 }
 
@@ -47,6 +48,11 @@ func (q *Query) Paginate(page int, perPage int) *Query {
 
 func (q *Query) Order(orderedBy string) *Query {
 	q.Sort = orderedBy
+	return q
+}
+
+func (q *Query) With(entity string) *Query {
+	q.Joins = append(q.Joins, entity)
 	return q
 }
 
