@@ -21,6 +21,15 @@ func (q *Query) Condition(field string, operator Operator, value any) *Query {
 	return q
 }
 
+func (q *Query) GetConditionValue(field string) any {
+	for _, condition := range q.Conditions {
+		if condition.Field == field {
+			return condition.Value
+		}
+	}
+	return nil
+}
+
 func (q *Query) IsConditionExist(field string) bool {
 	for _, condition := range q.Conditions {
 		if condition.Field == field {
