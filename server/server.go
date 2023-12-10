@@ -7,17 +7,15 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
-	"strconv"
 	"syscall"
 	"time"
 
 	"github.com/alvinfebriando/gin-gorm-skeleton/applogger"
+	"github.com/alvinfebriando/gin-gorm-skeleton/config"
 )
 
 func New(router http.Handler) *http.Server {
-	host := os.Getenv("APP_HOST")
-	port := os.Getenv("APP_PORT")
-	addr := fmt.Sprintf("%s:%s", host, port)
+	addr := fmt.Sprintf("%s:%s", config.New().AppHost, config.New().AppPort)
 
 	return &http.Server{
 		Addr:    addr,
@@ -38,16 +36,11 @@ func StartWithGracefulShutdown(s *http.Server) {
 	<-quit
 	applogger.Log.Info("Shutdown Server ...")
 
-	const defaultTimeout = 5
-	timeoutString := os.Getenv("TIMEOUT")
-	timeout, err := strconv.Atoi(timeoutString)
-	if err != nil {
-		timeout = defaultTimeout
-	}
+	timeout := config.New().GracefulShutdownTimeout
 
-	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(timeout)*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), timeout*time.Second)
 	defer cancel()
-	if err = s.Shutdown(ctx); err != nil {
+	if err := s.Shutdown(ctx); err != nil {
 		applogger.Log.Info("Server Shutdown:", err)
 	}
 

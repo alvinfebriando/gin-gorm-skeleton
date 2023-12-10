@@ -2,10 +2,10 @@ package appjwt
 
 import (
 	"errors"
-	"os"
 	"strconv"
 	"time"
 
+	"github.com/alvinfebriando/gin-gorm-skeleton/config"
 	"github.com/alvinfebriando/gin-gorm-skeleton/entity"
 	"github.com/golang-jwt/jwt/v5"
 )
@@ -26,9 +26,8 @@ type jwtImpl struct {
 }
 
 func NewJwt() Jwt {
-	key := os.Getenv("SECRET")
 	return &jwtImpl{
-		secretKey: []byte(key),
+		secretKey: []byte(config.New().JwtSecret),
 	}
 }
 
@@ -36,10 +35,10 @@ func (j *jwtImpl) GenerateToken(user *entity.User) (string, error) {
 	userId := strconv.Itoa(int(user.Id))
 	claims := CustomClaims{
 		RegisteredClaims: jwt.RegisteredClaims{
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(1 * time.Hour)),
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(config.New().JwtExpiryDuration * time.Hour)),
 			IssuedAt:  jwt.NewNumericDate(time.Now()),
 			NotBefore: jwt.NewNumericDate(time.Now()),
-			Issuer:    "LIBRARY",
+			Issuer:    config.New().AppName,
 			Subject:   userId,
 		},
 		Id: user.Id,

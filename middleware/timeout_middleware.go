@@ -2,24 +2,16 @@ package middleware
 
 import (
 	"context"
-	"os"
-	"strconv"
 	"time"
 
+	"github.com/alvinfebriando/gin-gorm-skeleton/config"
 	"github.com/gin-gonic/gin"
 )
 
 func Timeout() gin.HandlerFunc {
-	const defaultTimeout = 5
-	seconds, err := strconv.Atoi(os.Getenv("REQUEST_TIMEOUT"))
-	if err != nil {
-		seconds = defaultTimeout
-	}
-
-	duration := time.Duration(seconds) * time.Second
 	return func(c *gin.Context) {
 		ctx := c.Request.Context()
-		ctx, cancel := context.WithTimeout(ctx, duration)
+		ctx, cancel := context.WithTimeout(ctx, config.New().RequestTimeout*time.Second)
 		defer cancel()
 
 		c.Request = c.Request.WithContext(ctx)
