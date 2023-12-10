@@ -4,6 +4,8 @@ import (
 	"os"
 	"strconv"
 	"time"
+
+	"github.com/joho/godotenv"
 )
 
 type Option struct {
@@ -46,6 +48,7 @@ func New() *Option {
 }
 
 func initialize() *Option {
+	_ = godotenv.Load()
 	appName := os.Getenv("APP_NAME")
 	appEnv := os.Getenv("APP_ENV")
 	appHost := os.Getenv("APP_HOST")
