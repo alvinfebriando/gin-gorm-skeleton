@@ -29,8 +29,13 @@ func Logger() gin.HandlerFunc {
 			"client_ip":  c.ClientIP(),
 			"method":     c.Request.Method,
 			"uri":        c.Request.RequestURI,
-			"duration":   fmt.Sprintf("%d%s", endTime.Sub(startTime).Milliseconds(), " ms"),
+			"duration":   fmt.Sprintf("%d%s", endTime.Sub(startTime).Microseconds(), " ns"),
 			"status":     c.Writer.Status(),
+		}
+		err := c.Errors.Last()
+		if err != nil {
+			applogger.Log.WithFields(fields).Error(err)
+			return
 		}
 		applogger.Log.WithFields(fields).Info("request processed")
 	}
