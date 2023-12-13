@@ -22,6 +22,13 @@ func Logger() gin.HandlerFunc {
 		c.Next()
 
 		endTime := time.Now()
+		durationInt := endTime.Sub(startTime)
+		duration := durationInt.Microseconds()
+		unit := "μs"
+		if durationInt.Microseconds() > 1000 {
+			duration = durationInt.Milliseconds()
+			unit = "ms"
+		}
 
 		fields := map[string]any{
 			"type":       "REQUEST",
@@ -29,7 +36,7 @@ func Logger() gin.HandlerFunc {
 			"client_ip":  c.ClientIP(),
 			"method":     c.Request.Method,
 			"uri":        c.Request.RequestURI,
-			"duration":   fmt.Sprintf("%d%s", endTime.Sub(startTime).Microseconds(), " ns"),
+			"duration":   fmt.Sprintf("%d%s", duration, unit),
 			"status":     c.Writer.Status(),
 		}
 		err := c.Errors.Last()
