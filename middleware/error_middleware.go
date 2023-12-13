@@ -34,34 +34,35 @@ func Error() gin.HandlerFunc {
 			err = cErr.UnWrap()
 		}
 
+		message := strings.Split(err.Error(), "\n")
 		switch {
 		case err.Error() == "invalid request":
 			c.AbortWithStatusJSON(http.StatusBadRequest, dto.Response{
-				Error: errors.New("invalid request").Error(),
+				Error: []string{"invalid request"},
 			})
 		case errors.Is(err, io.EOF):
 			c.AbortWithStatusJSON(http.StatusBadRequest, dto.Response{
-				Error: err.Error(),
+				Error: message,
 			})
 		case errors.As(err, &sErr):
 			c.AbortWithStatusJSON(http.StatusBadRequest, dto.Response{
-				Error: sErr.Error(),
+				Error: message,
 			})
 		case errors.As(err, &uErr):
 			c.AbortWithStatusJSON(http.StatusBadRequest, dto.Response{
-				Error: uErr.Error(),
+				Error: message,
 			})
 		case errors.As(err, &vErr):
 			c.AbortWithStatusJSON(http.StatusBadRequest, dto.Response{
-				Error: strings.Split(vErr.Error(), "\n"),
+				Error: message,
 			})
 		case isClientError:
 			c.AbortWithStatusJSON(cErr.GetCode(), dto.Response{
-				Error: cErr.Error(),
+				Error: message,
 			})
 		default:
 			c.AbortWithStatusJSON(http.StatusInternalServerError, dto.Response{
-				Error: err.Error(),
+				Error: message,
 			})
 		}
 
