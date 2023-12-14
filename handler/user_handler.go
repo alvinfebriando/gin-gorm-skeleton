@@ -24,6 +24,10 @@ func (h *UserHandler) Register(c *gin.Context) {
 		_ = c.Error(err)
 		return
 	}
+	if err := request.Validate(); err != nil {
+		_ = c.Error(err)
+		return
+	}
 
 	user := request.ToUser()
 	createdUser, err := h.uu.Register(c.Request.Context(), user)
@@ -40,6 +44,10 @@ func (h *UserHandler) Register(c *gin.Context) {
 func (h *UserHandler) Login(c *gin.Context) {
 	var request dto.LoginRequest
 	if err := c.ShouldBindJSON(&request); err != nil {
+		_ = c.Error(err)
+		return
+	}
+	if err := request.Validate(); err != nil {
 		_ = c.Error(err)
 		return
 	}
