@@ -11,6 +11,15 @@ RUN CGO_ENABLED=0 GOOS=linux go build -o ./bin/rest ./cmd/rest/rest.go
 RUN CGO_ENABLED=0 GOOS=linux go build -o ./bin/migrate ./cmd/migrate/migrate.go
 RUN CGO_ENABLED=0 GOOS=linux go build -o ./bin/seed ./cmd/seed/seed.go
 
+FROM golang:1.18.10-alpine as watcher
+
+RUN apk add --no-cache make
+RUN go install github.com/cosmtrek/air@latest
+
+WORKDIR /app
+
+CMD make reload
+
 FROM alpine:3 as migration
 
 WORKDIR /app

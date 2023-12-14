@@ -61,3 +61,6 @@ up:
 
 down:
 	@docker compose down
+
+dev:
+	@docker compose up rest_dev
