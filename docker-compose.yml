@@ -5,7 +5,7 @@ services:
     container_name: ${REST_CONTAINER_NAME}
     build: .
     ports:
-      - 8080:8080
+      - "8080:8080"
     env_file:
       - .env
     networks:
@@ -20,7 +20,7 @@ services:
     image: postgres:16-alpine
     container_name: ${POSTGRES_CONTAINER_NAME}
     ports:
-      - 5432:5432
+      - "5432:5432"
     environment:
       POSTGRES_PASSWORD: ${DB_PASS}
       POSTGRES_USER: ${DB_USER}
