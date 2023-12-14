@@ -1,0 +1,58 @@
+version: "3.9"
+
+services:
+  rest:
+    container_name: ${REST_CONTAINER_NAME}
+    build: .
+    ports:
+      - 8080:8080
+    env_file:
+      - .env
+    networks:
+      network:
+    depends_on:
+      migration:
+        condition: service_completed_successfully
+    links:
+      - "database"
+
+  database:
+    image: postgres:16-alpine
+    container_name: ${POSTGRES_CONTAINER_NAME}
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASS}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_DB: ${DB_NAME}
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U user -d skeleton_db" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - volume:/var/lib/postgresql/data
+    networks:
+      network:
+
+  migration:
+    container_name: ${MIGRATION_CONTAINER_NAME}
+    build:
+      context: .
+      target: "migration"
+    env_file:
+      - .env
+    depends_on:
+      database:
+        condition: service_healthy
+    networks:
+      network:
+    links:
+      - "database"
+
+volumes:
+  volume:
+
+networks:
+  network:
+    driver: bridge

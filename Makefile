@@ -4,6 +4,9 @@ SRC_REST := ./cmd/rest/rest.go
 BIN_REST := ./bin/rest
 BUILD_REST_CMD := go build -o $(BIN_REST) $(SRC_REST)
 
+BIN_MIGRATE := ./bin/migrate
+BIN_SEED := ./bin/seed
+
 SKELETON := github.com/alvinfebriando/gin-gorm-skeleton
 
 reload: air
@@ -17,6 +20,10 @@ build:
 
 migrate:
 	@go run ./cmd/migrate/migrate.go
+
+migration:
+	@$(BIN_MIGRATE)
+	@$(BIN_SEED)
 
 seed:
 	@go run ./cmd/seed/seed.go
@@ -48,3 +55,9 @@ clean:
 rename:
 	@find . -type f -name "*.mod" -exec sed -i'' -e 's,$(SKELETON),$(MODULE),g' {} +
 	@find . -type f -name "*.go" -exec sed -i'' -e 's,$(SKELETON),$(MODULE),g' {} +
+
+up:
+	@docker compose up
+
+down:
+	@docker compose down
