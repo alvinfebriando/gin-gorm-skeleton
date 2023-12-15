@@ -30,3 +30,10 @@ nano .env
 # hot reload
 make reload
 ```
+
+## Make commands
+
+- `make up` run rest server with docker
+- `make down` stop docker container
+- `make dev` run rest server with hot reload
+- `make refresh` run migration inside docker container
