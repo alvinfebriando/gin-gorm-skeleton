@@ -11,7 +11,7 @@ RUN CGO_ENABLED=0 GOOS=linux go build -o ./bin/rest ./cmd/rest/rest.go
 RUN CGO_ENABLED=0 GOOS=linux go build -o ./bin/migrate ./cmd/migrate/migrate.go
 RUN CGO_ENABLED=0 GOOS=linux go build -o ./bin/seed ./cmd/seed/seed.go
 
-FROM golang:1.18.10-alpine as watcher
+FROM golang:1.18.10-alpine as watch
 
 RUN apk add --no-cache make
 RUN go install github.com/cosmtrek/air@latest
