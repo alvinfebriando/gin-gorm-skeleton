@@ -3,6 +3,7 @@ package middleware
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io"
 	"net/http"
 	"strings"
@@ -54,7 +55,7 @@ func Error() gin.HandlerFunc {
 			})
 		case errors.As(err, &vErr):
 			c.AbortWithStatusJSON(http.StatusBadRequest, dto.Response{
-				Error: message,
+				Error: handleValidationError(vErr),
 			})
 		case isClientError:
 			c.AbortWithStatusJSON(cErr.GetCode(), dto.Response{
@@ -67,4 +68,33 @@ func Error() gin.HandlerFunc {
 		}
 
 	}
+}
+
+func handleValidationError(err validator.ValidationErrors) []string {
+	output := make([]string, 0)
+	for _, fieldError := range err {
+		output = append(output, parseValidationError(fieldError))
+	}
+	return output
+}
+
+func parseValidationError(err validator.FieldError) string {
+	field := strings.ToLower(err.Field())
+	switch err.Tag() {
+	case "required":
+		return fmt.Sprintf("%s is required", field)
+	case "email":
+		return fmt.Sprintf("invalid email value")
+	case "alpha":
+		return fmt.Sprintf("%s should consist of letters only", field)
+	case "oneof":
+		return fmt.Sprintf("%s's value should be one of [%v]", field, err.Param())
+	case "startswith":
+		return fmt.Sprintf("%s value should starts with %s", field, err.Param())
+	case "numeric":
+		return fmt.Sprintf("%s value should be numeric", field)
+	case "len":
+		return fmt.Sprintf("%s value length should be exactly %v", field, err.Param())
+	}
+	return err.Error()
 }
