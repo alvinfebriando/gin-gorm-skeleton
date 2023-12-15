@@ -64,3 +64,6 @@ down:
 
 dev:
 	@docker compose up rest_dev
+
+refresh:
+	@docker compose up migration
