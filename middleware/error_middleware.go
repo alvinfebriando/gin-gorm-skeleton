@@ -54,8 +54,10 @@ func Error() gin.HandlerFunc {
 				Error: message,
 			})
 		case errors.As(err, &vErr):
+			message = handleValidationError(vErr)
+			_ = c.Error(fmt.Errorf("%s", strings.Join(message, ", ")))
 			c.AbortWithStatusJSON(http.StatusBadRequest, dto.Response{
-				Error: handleValidationError(vErr),
+				Error: message,
 			})
 		case isClientError:
 			c.AbortWithStatusJSON(cErr.GetCode(), dto.Response{
