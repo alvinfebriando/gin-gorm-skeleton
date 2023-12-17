@@ -24,6 +24,7 @@ func New(handlers Handlers) *grpc.Server {
 	s := grpc.NewServer(grpc.ChainUnaryInterceptor(
 		interceptor.LogInterceptor,
 		interceptor.AuthInterceptor,
+		interceptor.TimeoutInterceptor,
 	))
 
 	pb.RegisterUserServer(s, handlers.User)
