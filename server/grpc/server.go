@@ -11,6 +11,7 @@ import (
 	"github.com/alvinfebriando/gin-gorm-skeleton/applogger"
 	"github.com/alvinfebriando/gin-gorm-skeleton/config"
 	grpchandler "github.com/alvinfebriando/gin-gorm-skeleton/handler/grpc"
+	"github.com/alvinfebriando/gin-gorm-skeleton/interceptor"
 	pb "github.com/alvinfebriando/gin-gorm-skeleton/proto"
 	"google.golang.org/grpc"
 )
@@ -20,7 +21,7 @@ type Handlers struct {
 }
 
 func New(handlers Handlers) *grpc.Server {
-	s := grpc.NewServer()
+	s := grpc.NewServer(grpc.ChainUnaryInterceptor(interceptor.AuthInterceptor))
 
 	pb.RegisterUserServer(s, handlers.User)
 
