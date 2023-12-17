@@ -57,7 +57,7 @@ func StartWithGracefulShutdown(s *grpc.Server) {
 		close(stopped)
 	}()
 
-	t := time.NewTimer(10 * time.Second)
+	t := time.NewTimer(config.New().GracefulShutdownTimeout * time.Second)
 	select {
 	case <-t.C:
 		s.Stop()
