@@ -1,15 +1,15 @@
-package router
+package rest
 
 import (
 	"net/http"
 
-	"github.com/alvinfebriando/gin-gorm-skeleton/handler"
+	resthandler "github.com/alvinfebriando/gin-gorm-skeleton/handler/rest"
 	"github.com/alvinfebriando/gin-gorm-skeleton/middleware"
 	"github.com/gin-gonic/gin"
 )
 
 type Handlers struct {
-	User *handler.UserHandler
+	User *resthandler.UserHandler
 }
 
 func New(handlers Handlers) http.Handler {

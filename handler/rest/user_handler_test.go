@@ -1,4 +1,4 @@
-package handler_test
+package rest_test
 
 import (
 	"net/http"
@@ -9,9 +9,9 @@ import (
 	"github.com/alvinfebriando/gin-gorm-skeleton/applogger"
 	"github.com/alvinfebriando/gin-gorm-skeleton/dto"
 	"github.com/alvinfebriando/gin-gorm-skeleton/entity"
-	"github.com/alvinfebriando/gin-gorm-skeleton/handler"
+	resthandler "github.com/alvinfebriando/gin-gorm-skeleton/handler/rest"
 	"github.com/alvinfebriando/gin-gorm-skeleton/mocks"
-	"github.com/alvinfebriando/gin-gorm-skeleton/router"
+	restrouter "github.com/alvinfebriando/gin-gorm-skeleton/router/rest"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/suite"
 )
@@ -35,18 +35,18 @@ type UserHandlerTestSuite struct {
 	suite.Suite
 	router http.Handler
 	uu     *mocks.UserUsecase
-	uh     *handler.UserHandler
+	uh     *resthandler.UserHandler
 	rec    *httptest.ResponseRecorder
 }
 
 func (s *UserHandlerTestSuite) SetupSubTest() {
 	applogger.SetLogrusLogger()
 	s.uu = mocks.NewUserUsecase(s.T())
-	s.uh = handler.NewUserHandler(s.uu)
-	h := router.Handlers{
+	s.uh = resthandler.NewUserHandler(s.uu)
+	h := restrouter.Handlers{
 		User: s.uh,
 	}
-	s.router = router.New(h)
+	s.router = restrouter.New(h)
 	s.rec = httptest.NewRecorder()
 }
 

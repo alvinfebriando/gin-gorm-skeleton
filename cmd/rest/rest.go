@@ -3,11 +3,11 @@ package main
 import (
 	"github.com/alvinfebriando/gin-gorm-skeleton/appjwt"
 	"github.com/alvinfebriando/gin-gorm-skeleton/applogger"
-	"github.com/alvinfebriando/gin-gorm-skeleton/handler"
+	resthandler "github.com/alvinfebriando/gin-gorm-skeleton/handler/rest"
 	"github.com/alvinfebriando/gin-gorm-skeleton/hash"
 	"github.com/alvinfebriando/gin-gorm-skeleton/repository"
-	"github.com/alvinfebriando/gin-gorm-skeleton/router"
-	"github.com/alvinfebriando/gin-gorm-skeleton/server"
+	restrouter "github.com/alvinfebriando/gin-gorm-skeleton/router/rest"
+	restserver "github.com/alvinfebriando/gin-gorm-skeleton/server/rest"
 	"github.com/alvinfebriando/gin-gorm-skeleton/usecase"
 )
 
@@ -23,15 +23,15 @@ func main() {
 	newJwt := appjwt.NewJwt()
 	newHasher := hash.NewHasher()
 	userUsecase := usecase.NewUserUsecase(userRepo, newJwt, newHasher)
-	userHandler := handler.NewUserHandler(userUsecase)
+	userHandler := resthandler.NewUserHandler(userUsecase)
 
-	handlers := router.Handlers{
+	handlers := restrouter.Handlers{
 		User: userHandler,
 	}
 
-	r := router.New(handlers)
+	r := restrouter.New(handlers)
 
-	s := server.New(r)
+	s := restserver.New(r)
 
-	server.StartWithGracefulShutdown(s)
+	restserver.StartWithGracefulShutdown(s)
 }
