@@ -3,6 +3,7 @@ package dto
 import (
 	"strings"
 
+	"github.com/alvinfebriando/gin-gorm-skeleton/apperror"
 	"github.com/alvinfebriando/gin-gorm-skeleton/entity"
 	"github.com/alvinfebriando/gin-gorm-skeleton/validator"
 )
@@ -18,7 +19,7 @@ func (r *RegisterRequest) Validate() error {
 	r.Password = password
 	err := validator.New().Struct(r)
 	if err != nil {
-		return err
+		return apperror.NewValidationError(err)
 	}
 
 	return nil
@@ -42,7 +43,7 @@ func (r *LoginRequest) Validate() error {
 	r.Password = password
 	err := validator.New().Struct(r)
 	if err != nil {
-		return err
+		return apperror.NewValidationError(err)
 	}
 
 	return nil
