@@ -3,6 +3,7 @@ package handler
 import (
 	"net/http"
 
+	"github.com/alvinfebriando/gin-gorm-skeleton/apperror"
 	"github.com/alvinfebriando/gin-gorm-skeleton/dto"
 	"github.com/alvinfebriando/gin-gorm-skeleton/usecase"
 	"github.com/gin-gonic/gin"
@@ -25,7 +26,7 @@ func (h *UserHandler) Register(c *gin.Context) {
 		return
 	}
 	if err := request.Validate(); err != nil {
-		_ = c.Error(err)
+		_ = c.Error(apperror.NewValidationError(err))
 		return
 	}
 
@@ -48,7 +49,7 @@ func (h *UserHandler) Login(c *gin.Context) {
 		return
 	}
 	if err := request.Validate(); err != nil {
-		_ = c.Error(err)
+		_ = c.Error(apperror.NewValidationError(err))
 		return
 	}
 
