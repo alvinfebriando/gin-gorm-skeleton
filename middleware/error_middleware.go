@@ -11,7 +11,6 @@ import (
 	"github.com/alvinfebriando/gin-gorm-skeleton/apperror"
 	"github.com/alvinfebriando/gin-gorm-skeleton/dto"
 	"github.com/gin-gonic/gin"
-	"github.com/go-playground/validator/v10"
 )
 
 func Error() gin.HandlerFunc {
@@ -26,7 +25,6 @@ func Error() gin.HandlerFunc {
 
 		var sErr *json.SyntaxError
 		var uErr *json.UnmarshalTypeError
-		var vErr validator.ValidationErrors
 		var cErr *apperror.ClientError
 
 		isClientError := false
@@ -50,10 +48,6 @@ func Error() gin.HandlerFunc {
 				Error: message,
 			})
 		case errors.As(err, &uErr):
-			c.AbortWithStatusJSON(http.StatusBadRequest, dto.Response{
-				Error: message,
-			})
-		case errors.As(err, &vErr):
 			c.AbortWithStatusJSON(http.StatusBadRequest, dto.Response{
 				Error: message,
 			})
