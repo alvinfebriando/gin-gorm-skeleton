@@ -21,7 +21,10 @@ type Handlers struct {
 }
 
 func New(handlers Handlers) *grpc.Server {
-	s := grpc.NewServer(grpc.ChainUnaryInterceptor(interceptor.AuthInterceptor))
+	s := grpc.NewServer(grpc.ChainUnaryInterceptor(
+		interceptor.LogInterceptor,
+		interceptor.AuthInterceptor,
+	))
 
 	pb.RegisterUserServer(s, handlers.User)
 
