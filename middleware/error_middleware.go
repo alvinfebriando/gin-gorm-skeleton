@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"io"
@@ -58,6 +59,10 @@ func Error() gin.HandlerFunc {
 			})
 		case isClientError:
 			c.AbortWithStatusJSON(cErr.GetCode(), dto.Response{
+				Error: message,
+			})
+		case errors.Is(err, context.DeadlineExceeded):
+			c.AbortWithStatusJSON(http.StatusGatewayTimeout, dto.Response{
 				Error: message,
 			})
 		default:
