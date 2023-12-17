@@ -1,5 +1,3 @@
-ENV := release
-
 SRC_REST := ./cmd/rest/rest.go
 BIN_REST := ./bin/rest
 BUILD_REST_CMD := go build -o $(BIN_REST) $(SRC_REST)
@@ -10,10 +8,10 @@ BIN_SEED := ./bin/seed
 SKELETON := github.com/alvinfebriando/gin-gorm-skeleton
 
 reload: air
-	@GIN_MODE=$(ENV) air --log.main_only=true --build.cmd "$(BUILD_REST_CMD)" --build.bin "$(BIN_REST)"
+	@GIN_MODE=release air --log.main_only=true --build.cmd "$(BUILD_REST_CMD)" --build.bin "$(BIN_REST)"
 
 run: build
-	@GIN_MODE=$(ENV) $(BIN_REST)
+	@GIN_MODE=release $(BIN_REST)
 
 build:
 	@$(BUILD_REST_CMD)
