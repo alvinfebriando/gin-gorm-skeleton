@@ -25,6 +25,7 @@ func New(handlers Handlers) *grpc.Server {
 		interceptor.LogInterceptor,
 		interceptor.AuthInterceptor,
 		interceptor.TimeoutInterceptor,
+		interceptor.ErrorInterceptor,
 	))
 
 	pb.RegisterUserServer(s, handlers.User)
