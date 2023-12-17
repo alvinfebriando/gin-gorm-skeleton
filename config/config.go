@@ -13,6 +13,8 @@ type Option struct {
 	AppEnv                      string
 	AppHost                     string
 	AppPort                     string
+	GrpcHost                    string
+	GrpcPort                    string
 	DbHost                      string
 	DbPort                      string
 	DbUser                      string
@@ -53,6 +55,8 @@ func initialize() *Option {
 	appEnv := os.Getenv("APP_ENV")
 	appHost := os.Getenv("APP_HOST")
 	appPort := os.Getenv("APP_PORT")
+	grpcHost := os.Getenv("GRPC_HOST")
+	grpcPort := os.Getenv("GRPC_PORT")
 	dbHost := os.Getenv("DB_HOST")
 	dbPort := os.Getenv("DB_PORT")
 	dbUser := os.Getenv("DB_USER")
@@ -89,6 +93,8 @@ func initialize() *Option {
 		AppEnv:                      appEnv,
 		AppHost:                     appHost,
 		AppPort:                     appPort,
+		GrpcHost:                    grpcHost,
+		GrpcPort:                    grpcPort,
 		DbHost:                      dbHost,
 		DbPort:                      dbPort,
 		DbUser:                      dbUser,
