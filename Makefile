@@ -54,6 +54,9 @@ rename:
 	@find . -type f -name "*.mod" -exec sed -i'' -e 's,$(SKELETON),$(MODULE),g' {} +
 	@find . -type f -name "*.go" -exec sed -i'' -e 's,$(SKELETON),$(MODULE),g' {} +
 
+gen:
+	@protoc -I=./proto --go_out=. --go-grpc_out=. ./proto/*.proto
+
 up:
 	@docker compose up
 
