@@ -52,7 +52,7 @@ func Error() gin.HandlerFunc {
 				Error: message,
 			})
 		case isClientError:
-			c.AbortWithStatusJSON(cErr.GetCode(), dto.Response{
+			c.AbortWithStatusJSON(cErr.HttpStatusCode(), dto.Response{
 				Error: message,
 			})
 		case errors.Is(err, context.DeadlineExceeded):
